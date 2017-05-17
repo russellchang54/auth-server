@@ -1,0 +1,78 @@
+package com.aek56.microservice.auth.entity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.aek56.microservice.auth.common.DataEntity;
+
+/**
+ * 角色Entity
+ *
+ * @author zj@aek56.com
+ */
+public class SysRole extends DataEntity
+{
+    /**
+     * 名称
+     */
+    private String name;
+    
+    /**
+     * 是否可用
+     */
+    private Boolean enable;
+    
+    /**
+     * 备注
+     */
+    private String remarks;
+    
+    /**
+     * 菜单列表
+     */
+    private List<SysMenu> menus = new ArrayList<>();
+    
+    @Length(min = 1, max = 100)
+    public String getName()
+    {
+        return name;
+    }
+    
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+    
+    public Boolean getEnable()
+    {
+        return enable;
+    }
+    
+    public void setEnable(Boolean enable)
+    {
+        this.enable = enable;
+    }
+    
+    @Length(min = 0, max = 255)
+    public String getRemarks()
+    {
+        return remarks;
+    }
+    
+    public void setRemarks(String remarks)
+    {
+        this.remarks = remarks;
+    }
+    
+    public List<SysMenu> getMenus()
+    {
+        return menus;
+    }
+    
+    public void setMenus(List<SysMenu> menus)
+    {
+        this.menus = menus;
+    }
+}

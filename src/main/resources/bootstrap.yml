@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: auth-server
+  profiles:
+    active: dev
+  cloud:
+    config:
+      uri: http://ebey.aek56.com:8888
+      label: dev
+
