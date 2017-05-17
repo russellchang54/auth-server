@@ -21,6 +21,14 @@ public class AuthUser extends AbstractAuthUser
     private String id;
     
     /**
+     * 设备Id
+     */
+    
+    private String deviceId;
+    
+   
+
+	/**
      * 登录名
      */
     private String loginName;
@@ -179,5 +187,13 @@ public class AuthUser extends AbstractAuthUser
     {
         this.tenantId = tenantId;
     }
+    
+    public String getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
     
 }
