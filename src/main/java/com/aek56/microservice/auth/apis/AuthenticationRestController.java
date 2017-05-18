@@ -40,7 +40,6 @@ public class AuthenticationRestController {
     private UserDetailsService userDetailsService;*/
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
- //   public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
     public Map<String, Object> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
