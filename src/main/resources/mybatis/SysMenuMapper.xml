@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aek.platform.system.provider.mapper.SysMenuMapper">
+<mapper namespace="com.aek56.microservice.auth.mapper.SysMenuMapper">
 
     <sql id="selectColumns">
         SELECT DISTINCT
@@ -19,7 +19,7 @@
         FROM sys_menu a
     </sql>
 
-    <select id="get" resultType="com.aek.platform.system.api.entity.SysMenu">
+    <select id="get" resultType="com.aek56.microservice.auth.entity.SysMenu">
         <include refid="selectColumns"/>
         WHERE a.id = #{id}
     </select>
@@ -32,12 +32,12 @@
 		 JOIN sys_user u ON u.id = ru.user_id AND u.id = '050ddf66675940398c6758ac0c8f2754'
     </select> -->
     
-    <select id="findListByUserId" resultType="com.aek.platform.system.api.entity.SysMenu">
+    <select id="findListByUserId" resultType="com.aek56.microservice.auth.entity.SysMenu">
         select p.code as permission from sys_permission p
 		limit 10
     </select>
 
-    <select id="findListByRoleId" resultType="com.aek.platform.system.api.entity.SysMenu">
+    <select id="findListByRoleId" resultType="com.aek56.microservice.auth.entity.SysMenu">
         <include refid="selectColumns"/>
         LEFT JOIN sys_role_menu rm ON rm.menu_id = a.id
         WHERE a.del_flag = '0'
@@ -45,7 +45,7 @@
         ORDER BY a.sort
     </select>
 
-    <select id="findAllList" resultType="com.aek.platform.system.api.entity.SysMenu">
+    <select id="findAllList" resultType="com.aek56.microservice.auth.entity.SysMenu">
         <include refid="selectColumns"/>
         WHERE a.del_flag = '0'
         ORDER BY a.sort
@@ -105,7 +105,7 @@
         WHERE id = #{id} OR parent_ids LIKE CONCAT('%', #{id}, ',%')
     </update>
 
-    <select id="findByParentIdsLike" resultType="com.aek.platform.system.api.entity.SysMenu">
+    <select id="findByParentIdsLike" resultType="com.aek56.microservice.auth.entity.SysMenu">
         SELECT
             a.id,
             a.parent_id,

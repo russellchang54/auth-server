@@ -36,8 +36,8 @@ public class AuthenticationRestController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    /*@Autowired
+    private UserDetailsService userDetailsService;*/
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
  //   public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
