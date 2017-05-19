@@ -25,6 +25,10 @@ public class SysRole extends DataEntity
      * 是否可用
      */
     private Boolean enable;
+	/**
+	 * 角色标识
+	 */
+	private String code;
     
     /**
      * 备注
@@ -77,4 +81,12 @@ public class SysRole extends DataEntity
     {
         this.menus = menus;
     }
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 }

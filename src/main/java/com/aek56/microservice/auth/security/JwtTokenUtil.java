@@ -287,7 +287,7 @@ public class JwtTokenUtil implements Serializable {
      *
      * @param userDetails 用户信息
      */
-    private void putUserDetails(AuthUser userDetails, Integer tenantId)
+    private void putUserDetails(AuthUser userDetails, Long tenantId)
     {
         String key = tenantId + ":" +REDIS_PREFIX_USER  + userDetails.getMobile();
         
@@ -301,7 +301,7 @@ public class JwtTokenUtil implements Serializable {
      *
      * @param username 用户名
      */
-    private void delUserDetails(String username,Integer tenantId) {
+    private void delUserDetails(String username,Long tenantId) {
         String key = tenantId + ":" + REDIS_PREFIX_USER + username;
         redisRepository.del(key);
     }

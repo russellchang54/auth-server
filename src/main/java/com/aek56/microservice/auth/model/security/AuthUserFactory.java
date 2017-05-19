@@ -58,13 +58,13 @@ public final class AuthUserFactory
         
         List<SimpleGrantedAuthority> authorities = sysRoles.stream()
                 .filter(SysRole::getEnable)
-                .map(sysRole -> new SimpleGrantedAuthority(sysRole.getName()))
+                .map(sysRole -> new SimpleGrantedAuthority(sysRole.getCode()))
                 .collect(Collectors.toList());
         
         // 添加基于Permission的权限信息
-        sysMenus.stream().filter(menu -> StringHelper.isNotBlank(menu.getPermission())).forEach(menu -> {
+        sysMenus.stream().filter(menu -> StringHelper.isNotBlank(menu.getCode())).forEach(menu -> {
             // 添加基于Permission的权限信息
-            for (String permission : StringHelper.split(menu.getPermission(), ","))
+            for (String permission : StringHelper.split(menu.getCode(), ","))
             {
                 authorities.add(new SimpleGrantedAuthority(permission));
             }

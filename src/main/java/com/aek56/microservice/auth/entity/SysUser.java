@@ -33,7 +33,7 @@ public class SysUser extends DataEntity {
     /**
      * 机构Id
      */
-    private Integer tenantId;
+    private Long tenantId;
     
     /**
      * 密码
@@ -168,12 +168,12 @@ public class SysUser extends DataEntity {
         this.menus = menus;
     }
     
-    public Integer getTenantId()
+    public Long getTenantId()
     {
         return tenantId;
     }
     
-    public void setTenantId(Integer tenantId)
+    public void setTenantId(Long tenantId)
     {
         this.tenantId = tenantId;
     }

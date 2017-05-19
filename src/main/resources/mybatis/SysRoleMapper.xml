@@ -6,6 +6,7 @@
         SELECT
             a.id,
             a.name,
+            a.code,
             a.enable,
             a.create_time,
             a.update_time
@@ -47,56 +48,6 @@
         ORDER BY a.create_date
     </select>
 
-    <!-- 插入角色 -->
-    <insert id="insert">
-        INSERT INTO sys_role (
-            id,
-            name,
-            enabled,
-            create_date,
-            update_date,
-            remarks
-        ) VALUES (
-            #{id},
-            #{name},
-            #{enabled},
-            #{createDate},
-            #{updateDate},
-            #{remarks}
-        )
-    </insert>
-
-    <!-- 更新角色 -->
-    <update id="update">
-        UPDATE sys_role
-        <set>
-            name = #{name},
-            enabled = #{enabled},
-            update_date = #{updateDate},
-            remarks = #{remarks}
-        </set>
-        WHERE id = #{id}
-    </update>
-
-
-    <!-- 删除角色 -->
-    <update id="deleteById">
-        UPDATE sys_role
-        SET del_flag = '1'
-        WHERE id = #{id}
-    </update>
-
-    <delete id="deleteRoleMenu">
-        DELETE FROM sys_role_menu
-        WHERE role_id = #{id}
-    </delete>
-
-    <insert id="insertRoleMenu">
-        INSERT INTO sys_role_menu(role_id, menu_id)
-        <foreach collection="menus" item="menu" separator=" union all ">
-            SELECT #{id}, #{menu.id} FROM dual
-        </foreach>
-    </insert>
 
 	<select id="isOrgAdmin" resultType="boolean">
 		SELECT count(sr.id) FROM `sys_role_user` ru,sys_role sr

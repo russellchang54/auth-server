@@ -1,12 +1,5 @@
 package com.aek56.microservice.auth.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-
 import com.aek56.microservice.auth.common.DataEntity;
 
 /**
@@ -25,179 +18,97 @@ public class SysMenu extends DataEntity
     private String parentId;
     
     /**
-     * 所有父级编号
-     */
-    private String parentIds;
-    
-    /**
      * 名称
      */
     private String name;
+	private Long moduleId;
+	/**
+	/**
+	 * 权限标识
+	 */
+	private String code;
     
     /**
      * 链接
      */
-    private String href;
-    
+    private String url;
+	/**
+	 * target
+	 */
+	private String target;
+	/**
+	 * 菜单标识
+	 */
+	private Boolean menuFlag;
+
     /**
      * 图标
      */
     private String icon;
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Long getModuleId() {
+		return moduleId;
+	}
+
+	public void setModuleId(Long moduleId) {
+		this.moduleId = moduleId;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getTarget() {
+		return target;
+	}
+
+	public void setTarget(String target) {
+		this.target = target;
+	}
+
+	public Boolean getMenuFlag() {
+		return menuFlag;
+	}
+
+	public void setMenuFlag(Boolean menuFlag) {
+		this.menuFlag = menuFlag;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
     
-    /**
-     * 排序
-     */
-    private Integer sort;
-    
-    /**
-     * 是否在菜单中显示（1：显示；0：不显示）
-     */
-    private Boolean isShow;
-    
-    /**
-     * 权限标识
-     */
-    private String permission;
-    
-    /**
-     * 备注
-     */
-    private String remarks;
-    
-    /**
-     * 是否是叶子节点
-     */
-    private Boolean leaf = true;
-    
-    /**
-     * 子节点
-     */
-    private List<SysMenu> children = new ArrayList<>();
-    
-    public String getParentId()
-    {
-        return parentId;
-    }
-    
-    public void setParentId(String parentId)
-    {
-        this.parentId = parentId;
-    }
-    
-    public String getParentIds()
-    {
-        return parentIds;
-    }
-    
-    public void setParentIds(String parentIds)
-    {
-        this.parentIds = parentIds;
-    }
-    
-    @Length(min = 1, max = 100)
-    public String getName()
-    {
-        return name;
-    }
-    
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-    
-    @Length(min = 0, max = 2000)
-    public String getHref()
-    {
-        return href;
-    }
-    
-    public void setHref(String href)
-    {
-        this.href = href;
-    }
-    
-    @Length(min = 0, max = 100)
-    public String getIcon()
-    {
-        return icon;
-    }
-    
-    public void setIcon(String icon)
-    {
-        this.icon = icon;
-    }
-    
-    @NotNull
-    public Integer getSort()
-    {
-        return sort;
-    }
-    
-    public void setSort(Integer sort)
-    {
-        this.sort = sort;
-    }
-    
-    public Boolean getShow()
-    {
-        return isShow;
-    }
-    
-    public void setShow(Boolean show)
-    {
-        isShow = show;
-    }
-    
-    @Length(min = 0, max = 200)
-    public String getPermission()
-    {
-        return permission;
-    }
-    
-    public void setPermission(String permission)
-    {
-        this.permission = permission;
-    }
-    
-    @Length(min = 0, max = 255)
-    public String getRemarks()
-    {
-        return remarks;
-    }
-    
-    public void setRemarks(String remarks)
-    {
-        this.remarks = remarks;
-    }
-    
-    public Boolean getLeaf()
-    {
-        return leaf;
-    }
-    
-    public void setLeaf(Boolean leaf)
-    {
-        this.leaf = leaf;
-    }
-    
-    public List<SysMenu> getChildren()
-    {
-        return children;
-    }
-    
-    public void setChildren(List<SysMenu> children)
-    {
-        this.children = children;
-    }
-    
-    /**
-     * 添加子节点
-     *
-     * @param node 菜单节点
-     */
-    public void addChild(SysMenu node)
-    {
-        this.children.add(node);
-    }
     
 }

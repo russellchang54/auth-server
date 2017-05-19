@@ -26,22 +26,6 @@ public interface SysRoleMapper extends CrudDao<SysRole> {
      */
     List<SysRole> findListByUserId(Long userId);
 
-    /**
-     * 删除角色菜单
-     *
-     * @param role the role
-     * @return the int
-     */
-    int deleteRoleMenu(SysRole role);
-
-    /**
-     * 插入角色菜单
-     *
-     * @param role the role
-     * @return the int
-     */
-    int insertRoleMenu(SysRole role);
-
     Boolean isOrgAdmin(@Param("userId")Long userId, @Param("tenantId")Long tenantId);
 
 	Boolean isSubOrg(@Param("parentTenantId")Long parentTenantId, @Param("subTenantId")Long subTenantId);

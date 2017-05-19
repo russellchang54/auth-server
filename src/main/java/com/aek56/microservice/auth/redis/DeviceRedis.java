@@ -17,19 +17,19 @@ public class DeviceRedis
 {
     private String token;
     
-    private Integer tanentId;/*当前租户*/
+    private Long tanentId;/*当前租户*/
     
-    private Integer inTanentId;/*所属租户*/
+    private Long inTanentId;/*所属租户*/
     
     private List<SysTenant> sysTenants; /*可用租户列表*/
        
     private String deviceType;
     
-    public Integer getInTanentId() {
+    public Long getInTanentId() {
 		return inTanentId;
 	}
 
-	public void setInTanentId(Integer inTanentId) {
+	public void setInTanentId(Long inTanentId) {
 		this.inTanentId = inTanentId;
 	}
 
@@ -53,12 +53,12 @@ public class DeviceRedis
         this.token = token;
     }
     
-    public Integer getTanentId()
+    public Long getTanentId()
     {
         return tanentId;
     }
     
-    public void setTanentId(Integer tanentId)
+    public void setTanentId(Long tanentId)
     {
         this.tanentId = tanentId;
     }
