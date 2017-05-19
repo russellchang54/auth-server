@@ -72,17 +72,6 @@ public class JwtTokenUtil implements Serializable {
     }
 
     
-    /**
-     * 获取设备
-     *
-     * @param token Token
-     * @return String
-     */
-    public String getDeviceIdFromToken(String token)
-    {
-        Claims claims = getClaimsFromToken(token);
-        return claims != null ? claims.getAudience() : null;
-    }
     
     public Date getCreatedDateFromToken(String token) {
         Date created;
@@ -161,26 +150,6 @@ public class JwtTokenUtil implements Serializable {
         return (AUDIENCE_TABLET.equals(audience) || AUDIENCE_MOBILE.equals(audience));
     }
 
-    public String generateToken(UserDetails userDetails, Device device) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
-        claims.put(CLAIM_KEY_AUDIENCE, generateAudience(device));
-        claims.put(CLAIM_KEY_CREATED, new Date());
-        
-        String token =  Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(generateExpirationDate())
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
-        
-        String key = REDIS_PREFIX_AUTH + userDetails.getUsername();
-        redisRepository.setExpire(key, token, expiration);
-        putUserDetails(userDetails);
-        return token;
-        //return generateToken(claims);
-    	
-    	
-    }
     
     /**
      * 生成 Token
@@ -262,6 +231,24 @@ public class JwtTokenUtil implements Serializable {
         String key = deviceid + ":" + REDIS_PREFIX_USER + username;
         return redisRepository.get(key);
     }
+    
+    
+    /**
+     * 获得用户信息 Json 字符串
+     *
+     * @param token Token
+     * @return String
+     */
+    public String getAuthUserString(String token) {
+        final String username = getUsernameFromToken(token);
+        final String deviceid = getAudienceFromToken(token).split(":")[1];
+        String key = deviceid + ":" + REDIS_PREFIX_AUTH + username;
+        DeviceRedis dr =  new Gson().fromJson(redisRepository.get(key), DeviceRedis.class);
+        
+        String keyUserDetail = dr.getTanentId() + ":" + REDIS_PREFIX_USER + username;
+        
+        return redisRepository.get(keyUserDetail);       
+    }
 
     /**
      * 获得用户信息
@@ -270,16 +257,6 @@ public class JwtTokenUtil implements Serializable {
      * @return UserDetails
      */
   //  public abstract UserDetails getUserDetails(String token);
-
-    /**
-     * 存储用户信息
-     *
-     * @param userDetails 用户信息
-     */
-    private void putUserDetails(UserDetails userDetails) {
-        String key = REDIS_PREFIX_USER + userDetails.getUsername();
-        redisRepository.setExpire(key, new Gson().toJson(userDetails), expiration);
-    }    
 
     /**
      * 存储用户信息
