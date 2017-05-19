@@ -1,17 +1,16 @@
 package com.aek56.microservice.auth.apis;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,14 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aek56.microservice.auth.model.security.AuthUser;
 import com.aek56.microservice.auth.security.JwtAuthenticationRequest;
 import com.aek56.microservice.auth.security.JwtTokenUtil;
-import com.aek56.microservice.auth.security.JwtUser;
-import com.aek56.microservice.auth.security.service.JwtAuthenticationResponse;
-
-import javax.servlet.http.HttpServletRequest;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 public class AuthenticationRestController {
@@ -70,6 +61,7 @@ public class AuthenticationRestController {
      //   final String token = jwtTokenUtil.generateToken(userDetails, device);
      //   final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
          final AuthUser userDetails = (AuthUser)authentication.getPrincipal();
+         userDetails.setDeviceId(deviceId);
          final String token = jwtTokenUtil.generateToken(userDetails,device);
         
 
