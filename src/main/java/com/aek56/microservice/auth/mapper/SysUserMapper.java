@@ -1,9 +1,10 @@
 package com.aek56.microservice.auth.mapper;
 
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.aek56.microservice.auth.dao.CrudDao;
 import com.aek56.microservice.auth.entity.SysUser;
-import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 用户DAO接口
@@ -20,35 +21,4 @@ public interface SysUserMapper extends CrudDao<SysUser> {
      * @return SysUser by login name
      */
     SysUser getByLoginName(String loginName);
-
-    /**
-     * 更新用户密码
-     *
-     * @param user the user
-     * @return the int
-     */
-    int updatePasswordById(SysUser user);
-
-    /**
-     * 删除用户角色关联数据
-     *
-     * @param user the user
-     * @return the int
-     */
-    int deleteUserRole(SysUser user);
-
-    /**
-     * 插入用户角色关联数据
-     *
-     * @param user the user
-     * @return the int
-     */
-    int insertUserRole(SysUser user);
-
-    /**
-     * 保存用户信息
-     *
-     * @param user the user
-     */
-    void updateInfo(SysUser user);
 }

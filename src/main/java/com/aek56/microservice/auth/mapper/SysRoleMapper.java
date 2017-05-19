@@ -24,7 +24,7 @@ public interface SysRoleMapper extends CrudDao<SysRole> {
      * @param userId the user id
      * @return the list
      */
-    List<SysRole> findListByUserId(String userId);
+    List<SysRole> findListByUserId(Long userId);
 
     /**
      * 删除角色菜单

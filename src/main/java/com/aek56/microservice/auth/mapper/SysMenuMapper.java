@@ -21,7 +21,7 @@ public interface SysMenuMapper extends CrudDao<SysMenu> {
      * @param userId the user id
      * @return the list
      */
-    List<SysMenu> findListByUserId(String userId);
+    List<SysMenu> findListByUserId(Long userId);
 
     /**
      * 根据角色查询菜单
@@ -38,13 +38,5 @@ public interface SysMenuMapper extends CrudDao<SysMenu> {
      * @return the list
      */
     List<SysMenu> findByParentIdsLike(SysMenu menu);
-
-    /**
-     * 更新父ID
-     *
-     * @param menu the menu
-     * @return the int
-     */
-    int updateParentIds(SysMenu menu);
 
 }

@@ -1,7 +1,6 @@
 package com.aek56.microservice.auth.entity;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,15 +16,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @author zj@aek56.com
  */
-public class SysUser extends DataEntity
-{
+public class SysUser extends DataEntity {
     
-    /**
-     * 超级管理用户ID
-     */
-    public static final String ADMIN_USER_ID = "1";
-    
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      * 设备Id
      */
     private String deviceId;
@@ -45,21 +40,27 @@ public class SysUser extends DataEntity
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    
-    /**
-     * 姓名
-     */
-    private String name;
+	/**
+	 * 所属租户名称
+	 */
+	private String tenantName;
+	/**
+	 * 真实姓名
+	 */
+	private String realName;
+	/**
+	 * 归属部门ID
+	 */
+	private Long deptId;
+	/**
+	 * 归属部门名称
+	 */
+	private String deptName;
     
     /**
      * 邮箱
      */
     private String email;
-    
-    /**
-     * 电话
-     */
-    private String phone;
     
     /**
      * 手机
@@ -70,23 +71,11 @@ public class SysUser extends DataEntity
      * 是否可用
      */
     private Boolean enable;
-    
-    //上次权限修改时间
-    
-    private Date last_authority_mod;
-    
-    public Date getLast_authority_mod() {
-		return last_authority_mod;
-	}
-
-	public void setLast_authority_mod(Date last_authority_mod) {
-		this.last_authority_mod = last_authority_mod;
-	}
-
 	/**
-     * 备注
-     */
-    private String remarks;
+	 * 是否管理员(0:否;1:是)
+	 */
+	private Boolean adminFlag;
+    
     
     /**
      * 角色列表
@@ -102,16 +91,6 @@ public class SysUser extends DataEntity
      * 模块列表
      */
     private List<Map<String, String>> modules = new ArrayList<Map<String, String>>();
-    
-    public SysUser()
-    {
-        super();
-    }
-    
-    public SysUser(String id)
-    {
-        super(id);
-    }
     
     @Length(min = 1, max = 100)
     public String getLoginName()
@@ -135,17 +114,6 @@ public class SysUser extends DataEntity
         this.password = password;
     }
     
-    @Length(min = 1, max = 100)
-    public String getName()
-    {
-        return name;
-    }
-    
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-    
     @Email
     @Length(max = 200)
     public String getEmail()
@@ -156,17 +124,6 @@ public class SysUser extends DataEntity
     public void setEmail(String email)
     {
         this.email = email;
-    }
-    
-    @Length(min = 0, max = 200)
-    public String getPhone()
-    {
-        return phone;
-    }
-    
-    public void setPhone(String phone)
-    {
-        this.phone = phone;
     }
     
     @Length(min = 0, max = 200)
@@ -188,17 +145,6 @@ public class SysUser extends DataEntity
     public void setEnable(Boolean enable)
     {
         this.enable = enable;
-    }
-    
-    @Length(min = 0, max = 255)
-    public String getRemarks()
-    {
-        return remarks;
-    }
-    
-    public void setRemarks(String remarks)
-    {
-        this.remarks = remarks;
     }
     
     public List<SysRole> getRoles()
@@ -249,5 +195,44 @@ public class SysUser extends DataEntity
 	public void setModules(List<Map<String, String>> modules) {
 		this.modules = modules;
 	}
-    
+
+	public String getTenantName() {
+		return tenantName;
+	}
+
+	public void setTenantName(String tenantName) {
+		this.tenantName = tenantName;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public Long getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+	public Boolean getAdminFlag() {
+		return adminFlag;
+	}
+
+	public void setAdminFlag(Boolean adminFlag) {
+		this.adminFlag = adminFlag;
+	}
 }

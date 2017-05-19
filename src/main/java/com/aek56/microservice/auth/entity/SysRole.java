@@ -14,7 +14,9 @@ import com.aek56.microservice.auth.common.DataEntity;
  */
 public class SysRole extends DataEntity
 {
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      * 名称
      */
     private String name;

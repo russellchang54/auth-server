@@ -1,11 +1,9 @@
 package com.aek56.microservice.auth.common;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.aek56.microservice.auth.common.StringHelper;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-
 import java.io.Serializable;
+
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 /**
  * Entity 基类
@@ -14,64 +12,27 @@ import java.io.Serializable;
  */
 public abstract class BaseEntity implements Serializable {
 
-    /**
+	private static final long serialVersionUID = 1L;
+	/**
      * 实体编号（唯一标识）
      */
-    private String id;
-
-    /**
-     * 是否是新记录（默认：false），调用setIsNewRecord()设置新记录，使用自定义ID。
-     * 设置为true后强制执行插入语句，ID不会自动生成，需从手动传入。
-     */
-    private boolean isNewRecord = false;
+    private Long id;
 
     public BaseEntity() {
 
     }
 
-    public BaseEntity(String id) {
+    public BaseEntity(Long id) {
         this();
         this.id = id;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-
-    /**
-     * 插入之前执行方法，子类实现
-     */
-    public abstract void preInsert();
-
-    /**
-     * 更新之前执行方法，子类实现
-     */
-    public abstract void preUpdate();
-
-    /**
-     * 是否是新记录（默认：false），调用setIsNewRecord()设置新记录，使用自定义ID。
-     * 设置为true后强制执行插入语句，ID不会自动生成，需从手动传入。
-     *
-     * @return 是否是新记录
-     */
-    @JsonIgnore
-    public boolean getIsNewRecord() {
-        return isNewRecord || StringHelper.isBlank(getId());
-    }
-
-    /**
-     * 是否是新记录（默认：false），调用setIsNewRecord()设置新记录，使用自定义ID。
-     * 设置为true后强制执行插入语句，ID不会自动生成，需从手动传入。
-     *
-     * @param isNewRecord 是否为新数据
-     */
-    public void setIsNewRecord(boolean isNewRecord) {
-        this.isNewRecord = isNewRecord;
     }
 
     @Override

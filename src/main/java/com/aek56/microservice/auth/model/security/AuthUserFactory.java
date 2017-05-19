@@ -1,6 +1,5 @@
 package com.aek56.microservice.auth.model.security;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,22 +28,21 @@ public final class AuthUserFactory
      * @param user the user
      * @return the auth user
      */
-    public static AuthUser create(SysUser user)
-    {
+    public static AuthUser create(SysUser user) {
         AuthUser authUser = new AuthUser(user.getId());
         authUser.setLoginName(user.getLoginName());
-        authUser.setName(user.getName());
+        authUser.setRealName(user.getRealName());
         authUser.setEmail(user.getEmail());
-        authUser.setPhone(user.getPhone());
         authUser.setMobile(user.getMobile());
         authUser.setPassword(user.getPassword());
         authUser.setEnabled(user.getEnable());
         authUser.setTenantId(user.getTenantId());
+        authUser.setTenantName(user.getTenantName());
         authUser.setDeviceId(user.getDeviceId());
-        authUser.setLast_authority_mod(user.getLast_authority_mod());
-        authUser.setLast_authority_load(new Date());
         authUser.setAuthorities(mapToGrantedAuthorities(user.getRoles(), user.getMenus()));
         authUser.setModules(user.getModules());
+        authUser.setDeptId(user.getDeptId());
+        authUser.setDeptName(user.getDeptName());
         return authUser;
     }
     

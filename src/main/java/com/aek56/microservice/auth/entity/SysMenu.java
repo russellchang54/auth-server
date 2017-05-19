@@ -74,24 +74,6 @@ public class SysMenu extends DataEntity
      */
     private List<SysMenu> children = new ArrayList<>();
     
-    public SysMenu()
-    {
-        super();
-    }
-    
-    public SysMenu(String id)
-    {
-        super(id);
-    }
-    
-    @Override
-    public void preInsert()
-    {
-        super.preInsert();
-        this.sort = 30;
-        this.isShow = true;
-    }
-    
     public String getParentId()
     {
         return parentId;

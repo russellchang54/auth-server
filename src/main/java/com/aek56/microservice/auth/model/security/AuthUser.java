@@ -1,7 +1,6 @@
 package com.aek56.microservice.auth.model.security;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  *
  * @author zj@aek56.com
  */
-public class AuthUser extends AbstractAuthUser
-{
+public class AuthUser extends AbstractAuthUser {
     
     /**
 	 * 
@@ -25,7 +23,7 @@ public class AuthUser extends AbstractAuthUser
 	/**
      * id
      */
-    private String id;
+    private Long id;
     
     /**
      * 设备Id
@@ -45,24 +43,30 @@ public class AuthUser extends AbstractAuthUser
     private Integer tenantId;
     
     /**
-     * 姓名
-     */
-    private String name;
-    
-    /**
      * 密码
      */
     private String password;
+	/**
+	 * 所属租户名称
+	 */
+	private String tenantName;
+	/**
+	 * 真实姓名
+	 */
+	private String realName;
+	/**
+	 * 归属部门ID
+	 */
+	private Long deptId;
+	/**
+	 * 归属部门名称
+	 */
+	private String deptName;
     
     /**
      * 邮箱
      */
     private String email;
-    
-    /**
-     * 电话
-     */
-    private String phone;
     
     /**
      * 手机
@@ -96,39 +100,18 @@ public class AuthUser extends AbstractAuthUser
 	public void setAdmin_flag(boolean admin_flag) {
 		this.admin_flag = admin_flag;
 	}
-
-	public Date getLast_authority_mod() {
-		return last_authority_mod;
-	}
-
-	public void setLast_authority_mod(Date last_authority_mod) {
-		this.last_authority_mod = last_authority_mod;
-	}
-
-	public Date getLast_authority_load() {
-		return last_authority_load;
-	}
-
-	public void setLast_authority_load(Date last_authority_load) {
-		this.last_authority_load = last_authority_load;
-	}
-
-	private Date last_authority_mod;
-    //上次权限加载时间
-    private Date last_authority_load;
-     
     
-    public AuthUser(String id)
+    public AuthUser(Long id)
     {
         this.id = id;
     }
     
-    public String getId()
+    public Long getId()
     {
         return id;
     }
     
-    public void setId(String id)
+    public void setId(Long id)
     {
         this.id = id;
     }
@@ -149,11 +132,6 @@ public class AuthUser extends AbstractAuthUser
         this.loginName = loginName;
     }
     
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-    
     @JsonIgnore
     @Override
     public String getPassword()
@@ -171,11 +149,6 @@ public class AuthUser extends AbstractAuthUser
         this.email = email;
     }
     
-    public void setPhone(String phone)
-    {
-        this.phone = phone;
-    }
-    
     public void setMobile(String mobile)
     {
         this.mobile = mobile;
@@ -190,20 +163,9 @@ public class AuthUser extends AbstractAuthUser
     {
         this.enabled = enabled;
     }
-    
-    public String getName()
-    {
-        return name;
-    }
-    
     public String getEmail()
     {
         return email;
-    }
-    
-    public String getPhone()
-    {
-        return phone;
     }
     
     public String getMobile()
@@ -247,6 +209,38 @@ public class AuthUser extends AbstractAuthUser
 
 	public void setModules(List<Map<String, String>> modules) {
 		this.modules = modules;
+	}
+
+	public String getTenantName() {
+		return tenantName;
+	}
+
+	public void setTenantName(String tenantName) {
+		this.tenantName = tenantName;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public Long getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
 	}
     
 }
