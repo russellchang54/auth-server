@@ -1,6 +1,7 @@
 package com.aek56.microservice.auth.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -70,7 +71,19 @@ public class SysUser extends DataEntity
      */
     private Boolean enable;
     
-    /**
+    //上次权限修改时间
+    
+    private Date last_authority_mod;
+    
+    public Date getLast_authority_mod() {
+		return last_authority_mod;
+	}
+
+	public void setLast_authority_mod(Date last_authority_mod) {
+		this.last_authority_mod = last_authority_mod;
+	}
+
+	/**
      * 备注
      */
     private String remarks;

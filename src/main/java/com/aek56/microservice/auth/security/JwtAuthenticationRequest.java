@@ -8,9 +8,20 @@ public class  JwtAuthenticationRequest implements Serializable {
     private static final long serialVersionUID = -8445943548965154778L;
 
     private String username;
+    
     private String password;
+    
+    private String deviceId;
 
-    public JwtAuthenticationRequest() {
+    public String getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
+
+	public JwtAuthenticationRequest() {
         super();
     }
 

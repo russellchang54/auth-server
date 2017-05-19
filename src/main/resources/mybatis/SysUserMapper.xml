@@ -12,6 +12,7 @@
             a.mobile as loginName,
             a.tenant_id as tenantId,
             a.enable,
+            a.last_authority_mod,
             a.create_time,
             a.update_time
         FROM sys_user a

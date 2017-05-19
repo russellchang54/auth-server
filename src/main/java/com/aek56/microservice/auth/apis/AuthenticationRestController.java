@@ -11,16 +11,21 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.aek56.microservice.auth.model.security.AuthUser;
 import com.aek56.microservice.auth.security.JwtAuthenticationRequest;
 import com.aek56.microservice.auth.security.JwtTokenUtil;
 import com.aek56.microservice.auth.security.JwtUser;
 import com.aek56.microservice.auth.security.service.JwtAuthenticationResponse;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +45,16 @@ public class AuthenticationRestController {
     private UserDetailsService userDetailsService;*/
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
-    public Map<String, Object> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
+    public Map<String, Object> createAuthenticationToken(  @RequestBody JwtAuthenticationRequest authenticationRequest, Device device) {
+    	String deviceId = authenticationRequest.getDeviceId(); 
+    	
+    	if( deviceId == null || deviceId.length() < 10){//终端编号不能小于10
+    		Map<String, Object> map = new HashMap<String, Object>();
+    		map.put("timestamp", new Date());
+    		map.put("status", 401);
+    		map.put("message", "deviceId 不能为空，且长度须大于10");
+    		return map;
+    	}
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -49,12 +63,15 @@ public class AuthenticationRestController {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        
 
         // Reload password post-security so we can generate token
      //   final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
      //   final String token = jwtTokenUtil.generateToken(userDetails, device);
-        final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        final String token = jwtTokenUtil.generateToken(userDetails,device);
+     //   final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+         final AuthUser userDetails = (AuthUser)authentication.getPrincipal();
+         final String token = jwtTokenUtil.generateToken(userDetails,device);
+        
 
         // Return the token
         //return ResponseEntity.ok(new JwtAuthenticationResponse(token));
