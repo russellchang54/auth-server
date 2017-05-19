@@ -1,5 +1,6 @@
 package com.aek56.microservice.auth.model.security;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,8 @@ public final class AuthUserFactory
         authUser.setEnabled(user.getEnable());
         authUser.setTenantId(user.getTenantId());
         authUser.setDeviceId(user.getDeviceId());
+        authUser.setLast_authority_mod(user.getLast_authority_mod());
+        authUser.setLast_authority_load(new Date());
         authUser.setAuthorities(mapToGrantedAuthorities(user.getRoles(), user.getMenus()));
         return authUser;
     }

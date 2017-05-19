@@ -1,6 +1,7 @@
 package com.aek56.microservice.auth.model.security;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -25,8 +26,7 @@ public class AuthUser extends AbstractAuthUser
      */
     
     private String deviceId;
-    
-   
+       
 
 	/**
      * 登录名
@@ -72,6 +72,40 @@ public class AuthUser extends AbstractAuthUser
      * 锁定
      */
     private boolean enabled;
+    
+    //管理员标识
+    
+    private boolean admin_flag;
+    //上次权限修改时间
+    
+    public boolean isAdmin_flag() {
+		return admin_flag;
+	}
+
+	public void setAdmin_flag(boolean admin_flag) {
+		this.admin_flag = admin_flag;
+	}
+
+	public Date getLast_authority_mod() {
+		return last_authority_mod;
+	}
+
+	public void setLast_authority_mod(Date last_authority_mod) {
+		this.last_authority_mod = last_authority_mod;
+	}
+
+	public Date getLast_authority_load() {
+		return last_authority_load;
+	}
+
+	public void setLast_authority_load(Date last_authority_load) {
+		this.last_authority_load = last_authority_load;
+	}
+
+	private Date last_authority_mod;
+    //上次权限加载时间
+    private Date last_authority_load;
+     
     
     public AuthUser(String id)
     {

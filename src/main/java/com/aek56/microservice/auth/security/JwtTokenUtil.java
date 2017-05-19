@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import com.aek56.microservice.auth.model.security.AuthUser;
 import com.aek56.microservice.auth.redis.DeviceRedis;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -3301605591108950415L;
 
     static final String CLAIM_KEY_USERNAME = "sub";
-    static final String CLAIM_KEY_AUDIENCE = "audience";
+    static final String CLAIM_KEY_AUDIENCE = "aud";
     static final String CLAIM_KEY_CREATED = "created";
 
     private static final String AUDIENCE_UNKNOWN = "unknown";
@@ -187,23 +188,28 @@ public class JwtTokenUtil implements Serializable {
      * @param userDetails 用户信息
      * @return String
      */
-    public String generateToken(UserDetails userDetails, String deviceId,Integer tenantId)
+    public String generateToken(AuthUser userDetails, Device device)
     {
         String token = Jwts.builder()
-                .setSubject(userDetails.getUsername()) //统一转换手机号
-                .setAudience(deviceId)
+                .setSubject(userDetails.getMobile()) //统一转换手机号
+                .setAudience(generateAudience(device) + ":" + userDetails.getDeviceId())
                 .setIssuer("aek56")
                 .setExpiration(generateExpirationDate())
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
         
-        String key = deviceId+":"+REDIS_PREFIX_AUTH + userDetails.getUsername();
+        String key = userDetails.getDeviceId() +":"+REDIS_PREFIX_AUTH + userDetails.getUsername();
 
         DeviceRedis deviceRedis = new DeviceRedis();
-        deviceRedis.setTanentId(tenantId);
+        deviceRedis.setInTanentId(userDetails.getTenantId());//所属租户
+        deviceRedis.setTanentId(userDetails.getTenantId());//当前租户       
         deviceRedis.setToken(token);
+        /*
+         * key: <deviceId>:auth:<手机号>
+         * value: <所属租户id>,<当前租户id>, <可用租户列表>,<token>
+         * */
         redisRepository.setExpire(key, new Gson().toJson(deviceRedis), expiration);
-        putUserDetails(userDetails, tenantId);
+        putUserDetails(userDetails, userDetails.getTenantId());
         return token;
     }
     
@@ -215,11 +221,15 @@ public class JwtTokenUtil implements Serializable {
      * @return Boolean
      */
     public Boolean validateToken(String token) {
+    	if (token.isEmpty() || token.contains(":")){
+    		return false;
+    	}
         final String username = getUsernameFromToken(token);
-        String key = REDIS_PREFIX_AUTH + username;
+        final String deviceid = getAudienceFromToken(token).split(":")[1];
+        String key = deviceid + ":" + REDIS_PREFIX_AUTH + username;
         String redisToken = redisRepository.get(key);
        // return StringHelper.isNotEmpty(token) && !isTokenExpired(token) && token.equals(redisToken);
-        return !token.isEmpty() && !isTokenExpired(token) && token.equals(redisToken);
+        return  !isTokenExpired(token) && token.equals(redisToken);
 
     }
 
@@ -230,9 +240,14 @@ public class JwtTokenUtil implements Serializable {
      */
     public void removeToken(String token) {
         final String username = getUsernameFromToken(token);
-        String key = REDIS_PREFIX_AUTH + username;
+        final String deviceid = getAudienceFromToken(token).split(":")[1];       
+        String key = deviceid + ":" + REDIS_PREFIX_AUTH + username;
+        DeviceRedis device = new Gson().fromJson(redisRepository.get(key), DeviceRedis.class);
         redisRepository.del(key);
-        delUserDetails(username);
+        
+        //读取当前租户的ID
+        delUserDetails(username,device.getTanentId());
+        
     }
 
     /**
@@ -243,7 +258,8 @@ public class JwtTokenUtil implements Serializable {
      */
     protected String getUserDetailsString(String token) {
         final String username = getUsernameFromToken(token);
-        String key = REDIS_PREFIX_USER + username;
+        final String deviceid = getAudienceFromToken(token).split(":")[1];
+        String key = deviceid + ":" + REDIS_PREFIX_USER + username;
         return redisRepository.get(key);
     }
 
@@ -263,29 +279,21 @@ public class JwtTokenUtil implements Serializable {
     private void putUserDetails(UserDetails userDetails) {
         String key = REDIS_PREFIX_USER + userDetails.getUsername();
         redisRepository.setExpire(key, new Gson().toJson(userDetails), expiration);
-    }
-    
+    }    
+
     /**
      * 存储用户信息
      *
      * @param userDetails 用户信息
      */
-    private void putUserDetails(UserDetails userDetails, Integer tenantId)
+    private void putUserDetails(AuthUser userDetails, Integer tenantId)
     {
-        String key = tenantId + ":" +REDIS_PREFIX_USER  + userDetails.getUsername();
+        String key = tenantId + ":" +REDIS_PREFIX_USER  + userDetails.getMobile();
         
         redisRepository.setExpire(key, new Gson().toJson(userDetails), expiration);
     }
 
-    /**
-     * 删除用户信息
-     *
-     * @param username 用户名
-     */
-    private void delUserDetails(String username) {
-        String key = REDIS_PREFIX_USER + username;
-        redisRepository.del(key);
-    }
+
 
     /**
      * 删除用户信息

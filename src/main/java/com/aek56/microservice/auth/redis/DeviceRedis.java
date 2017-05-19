@@ -17,12 +17,12 @@ public class DeviceRedis
 {
     private String token;
     
-    private Integer tanentId;
+    private Integer tanentId;/*当前租户*/
     
     private Integer inTanentId;/*所属租户*/
     
-    private List<SysTenant> sysTenants;
-    
+    private List<SysTenant> sysTenants; /*可用租户列表*/
+       
     private String deviceType;
     
     public Integer getInTanentId() {
