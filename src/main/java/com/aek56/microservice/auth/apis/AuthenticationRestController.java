@@ -43,7 +43,7 @@ public class AuthenticationRestController {
     		Map<String, Object> map = new HashMap<String, Object>();
     		map.put("timestamp", new Date());
     		map.put("status", 401);
-    		map.put("message", "deviceId 不能为空，且长度须大于10");
+    		map.put("message", "deviceId 不能为空，且长度须大于10位");
     		return map;
     	}
         // Perform the security
