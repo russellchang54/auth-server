@@ -2,6 +2,7 @@ package com.aek56.microservice.auth.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -83,6 +84,11 @@ public class SysUser extends DataEntity
      * 菜单列表
      */
     private List<SysMenu> menus = new ArrayList<>();
+    
+    /**
+     * 模块列表
+     */
+    private List<Map<String, String>> modules = new ArrayList<Map<String, String>>();
     
     public SysUser()
     {
@@ -222,5 +228,13 @@ public class SysUser extends DataEntity
     {
         this.deviceId = deviceId;
     }
+
+	public List<Map<String, String>> getModules() {
+		return modules;
+	}
+
+	public void setModules(List<Map<String, String>> modules) {
+		this.modules = modules;
+	}
     
 }

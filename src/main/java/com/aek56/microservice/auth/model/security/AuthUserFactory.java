@@ -41,6 +41,7 @@ public final class AuthUserFactory
         authUser.setTenantId(user.getTenantId());
         authUser.setDeviceId(user.getDeviceId());
         authUser.setAuthorities(mapToGrantedAuthorities(user.getRoles(), user.getMenus()));
+        authUser.setModules(user.getModules());
         return authUser;
     }
     

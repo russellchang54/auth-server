@@ -1,10 +1,11 @@
 package com.aek56.microservice.auth.model.security;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.aek56.microservice.auth.model.security.AbstractAuthUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -67,6 +68,11 @@ public class AuthUser extends AbstractAuthUser
      * 权限
      */
     private Collection<SimpleGrantedAuthority> authorities;
+    
+    /**
+     * 模块列表
+     */
+    private List<Map<String, String>> modules;
     
     /**
      * 锁定
@@ -194,6 +200,14 @@ public class AuthUser extends AbstractAuthUser
 
 	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
+	}
+
+	public List<Map<String, String>> getModules() {
+		return modules;
+	}
+
+	public void setModules(List<Map<String, String>> modules) {
+		this.modules = modules;
 	}
     
 }

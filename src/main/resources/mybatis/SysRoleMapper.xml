@@ -98,4 +98,27 @@
         </foreach>
     </insert>
 
+	<select id="isOrgAdmin" resultType="boolean">
+		SELECT count(sr.id) FROM `sys_role_user` ru,sys_role sr
+		where ru.role_id=sr.id and sr.tenant_id=#{tenantId} and ru.user_id = #{userId} and sr.name='机构管理员'
+		and ru.`enable` = true and sr.del_flag = false and sr.`enable` = true
+	</select>
+
+	<select id="isSubOrg" resultType="boolean">
+		select * from sys_tenant where parent_id = #{parentTenantId} and id = #{subTenantId} and `enable` = true and del_flag = false
+	</select>
+	
+	<select id="getOrgModule" resultType="java.util.Map">
+		select name,version_number,url from sys_tenant_module where tenant_id = #{tenantId} and `enable` = true and del_flag = false
+	</select>
+	
+	<select id="getOrgModuleByRole" resultType="java.util.Map">
+		select DISTINCT sm.`name`,sm.url,sm.id
+		from sys_role_user ru, sys_role_permission rp, sys_module sm
+		where ru.role_id = rp.role_id and rp.module_id = sm.id
+		and ru.user_id = #{userId} and ru.tenant_id = #{tenantId}
+		and ru.`enable` = true and rp.del_flag = false and rp.`enable` = true and sm.del_flag = false and sm.`enable` = true
+		ORDER BY sm.id asc
+	</select>
+	
 </mapper>

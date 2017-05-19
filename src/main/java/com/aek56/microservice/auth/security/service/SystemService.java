@@ -76,6 +76,15 @@ public class SystemService
         }
         
         user.setMenus(menuList);
+        boolean admin = this.isOrgAdmin(Long.valueOf(userId), Long.valueOf(user.getTenantId()));
+        List<Map<String, String>> modules = null;
+        if(admin){//显示机构下所有的模块
+        	modules = this.sysRoleMapper.getOrgModule(Long.valueOf(user.getTenantId()));
+        }else{//根据角色找模块
+        	modules = this.sysRoleMapper.getOrgModuleByRole(Long.valueOf(userId), Long.valueOf(user.getTenantId()));
+        }
+        user.setModules(modules);
+        //boolean subOrg = this.isSubOrg(37L, 50L);
         return user;
     }
     
@@ -376,4 +385,43 @@ public class SystemService
     {
         sysRoleMapper.deleteById(roleId);
     }*/
+    
+    /**
+     * 是否当前机构管理员
+     * 
+     * @param userId 当前登录用户的id
+     * @param tenantId 要访问的租户id
+     */
+    public boolean isOrgAdmin(Long userId, Long tenantId){
+    	Boolean orgAdmin = this.sysRoleMapper.isOrgAdmin(userId, tenantId);
+    	if(orgAdmin==null){
+    		return false;
+    	}
+    	return orgAdmin;
+    }
+    
+    /**
+     * 是否子机构
+     * 
+     * @param parentTenantId
+     * @param subTenantId
+     * @return
+     */
+    public boolean isSubOrg(Long parentTenantId, Long subTenantId){
+    	Boolean flag = this.sysRoleMapper.isSubOrg(parentTenantId, subTenantId);
+    	if(flag==null){
+    		return false;
+    	}
+    	return flag;
+    }
+
+    /**
+     * 取当前登录用户的角色
+     * 
+     * @param userId 当前登录用户的id
+     * @param tenantId 要访问的租户id
+     */
+    public void getRoleByUser(Long userId, Long tenantId){
+    	
+    }
 }

@@ -1,11 +1,14 @@
 package com.aek56.microservice.auth.mapper;
 
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.aek56.microservice.auth.dao.CrudDao;
 import com.aek56.microservice.auth.entity.SysRole;
-import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
 
 /**
  * 角色DAO接口
@@ -38,4 +41,12 @@ public interface SysRoleMapper extends CrudDao<SysRole> {
      * @return the int
      */
     int insertRoleMenu(SysRole role);
+
+    Boolean isOrgAdmin(@Param("userId")Long userId, @Param("tenantId")Long tenantId);
+
+	Boolean isSubOrg(@Param("parentTenantId")Long parentTenantId, @Param("subTenantId")Long subTenantId);
+	
+	List<Map<String,String>> getOrgModule(@Param("tenantId")Long tenantId);
+
+	List<Map<String,String>> getOrgModuleByRole(@Param("userId")Long userId, @Param("tenantId")Long tenantId);
 }
