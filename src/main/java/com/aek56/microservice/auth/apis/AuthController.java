@@ -1,5 +1,6 @@
 package com.aek56.microservice.auth.apis;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ import com.aek56.microservice.auth.security.JwtAuthenticationRequest;
 import com.aek56.microservice.auth.security.JwtTokenUtil;
 
 @RestController
-public class AuthenticationRestController {
+public class AuthController {
 
     @Value("${jwt.header}")
     private String tokenHeader;
@@ -31,9 +32,6 @@ public class AuthenticationRestController {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
-    /*@Autowired
-    private UserDetailsService userDetailsService;*/
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public Map<String, Object> createAuthenticationToken(  @RequestBody JwtAuthenticationRequest authenticationRequest, Device device) {
@@ -63,10 +61,6 @@ public class AuthenticationRestController {
          final AuthUser userDetails = (AuthUser)authentication.getPrincipal();
          userDetails.setDeviceId(deviceId);
          final String token = jwtTokenUtil.generateToken(userDetails,device);
-        
-
-        // Return the token
-        //return ResponseEntity.ok(new JwtAuthenticationResponse(token));
         Map<String, Object> tokenMap = new HashMap<>();
         tokenMap.put("access_token", token);
         tokenMap.put("expires_in", jwtTokenUtil.getExpiration());
@@ -82,10 +76,20 @@ public class AuthenticationRestController {
 
         if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
             String refreshedToken = jwtTokenUtil.refreshToken(token);
-            return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
+            return ResponseEntity.ok(refreshedToken);
         } else {
             return ResponseEntity.badRequest().body(null);
         }
     }*/
+
+	/**
+	 * Return the principal identifying the logged in user
+	 * @param user
+	 * @return
+	 */
+    @RequestMapping("/me")
+	public Principal getCurrentLoggedInUser(Principal user) {
+		return user;
+	}
 
 }
