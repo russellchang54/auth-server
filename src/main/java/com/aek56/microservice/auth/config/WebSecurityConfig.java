@@ -17,7 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.aek56.microservice.auth.security.JwtAuthenticationEntryPoint;
 import com.aek56.microservice.auth.security.JwtAuthenticationTokenFilter;
 
-@SuppressWarnings("SpringJavaAutowiringInspection")
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

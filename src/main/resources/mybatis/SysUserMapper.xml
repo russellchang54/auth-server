@@ -38,4 +38,11 @@
         WHERE (mobile = #{loginName} or email=#{loginName}) and enable = true and del_flag = false
     </select>
 
+    <select id="get" resultMap="BaseResultMap">
+    	select 
+        <include refid="Base_Column_List"/>
+        from sys_user
+        WHERE id=#{id} and enable = true and del_flag = false
+    </select>
+
 </mapper>

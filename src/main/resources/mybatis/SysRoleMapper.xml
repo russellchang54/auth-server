@@ -13,13 +13,12 @@
         FROM sys_role a
     </sql>
 
-    <select id="findListByUserId" resultType="com.aek56.microservice.auth.entity.SysRole">
-        <include refid="selectColumns"/>
-        LEFT JOIN sys_role_user ur ON ur.role_id = a.id
-        WHERE a.del_flag = '0'
-        AND a.enable = '1'
-        AND ur.user_id = #{userId}
-        ORDER BY a.create_time
+    <select id="findListByUser" resultType="com.aek56.microservice.auth.entity.SysRole">
+		select sr.id,sr.name,sr.code,sr.enable
+		from sys_role sr,sys_role_user ru
+		where sr.id=ru.role_id and sr.`enable`=true and sr.del_flag = false and ru.`enable` = true
+		and sr.tenant_id = #{tenantId} and ru.user_id = #{userId}
+		order by sr.id asc
     </select>
 
     <!-- 根据编号获得角色 -->

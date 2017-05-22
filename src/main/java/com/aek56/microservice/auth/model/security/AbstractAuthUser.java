@@ -10,7 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 public abstract class AbstractAuthUser implements UserDetails {
 
-    @JsonIgnore
+	private static final long serialVersionUID = 1L;
+
+	@JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;

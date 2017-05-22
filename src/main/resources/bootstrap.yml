@@ -5,6 +5,6 @@ spring:
     active: dev
   cloud:
     config:
-      uri: http://config-center:8888
+      uri: http://ebey.aek56.com:8888/
       label: dev
 

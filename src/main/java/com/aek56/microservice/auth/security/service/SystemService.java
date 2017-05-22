@@ -50,27 +50,38 @@ public class SystemService {
 			return null;
 		}
 		user.setLoginName(loginName);
-		Long userId = user.getId();
-		List<SysRole> roles = sysRoleMapper.findListByUserId(userId);
+		return user;
+	}
+	
+	public SysUser getUserById(Long userId) {
+		return sysUserMapper.get(userId);
+	}
+
+	/**
+	 * 初始化权限
+	 * @param user
+	 * @param tenantId
+	 */
+	public void getPerms(SysUser user, Long tenantId) {
+		List<SysRole> roles = sysRoleMapper.findListByUser(user.getId(), tenantId);
 		processRole(roles);
 
 		user.setRoles(roles);
 
 		List<SysMenu> menuList = null;
 		List<Map<String, String>> modules = null;
-		boolean admin = this.isOrgAdmin(userId, user.getTenantId());
+		boolean admin = this.isOrgAdmin(user.getId(), tenantId);
 		if (user.getAdminFlag()||admin) {// 显示机构下所有的模块
-			modules = this.sysRoleMapper.getOrgModule(user.getTenantId());
-			menuList =sysMenuMapper.findListByOrg(user.getTenantId());
+			modules = this.sysRoleMapper.getOrgModule(tenantId);
+			menuList =sysMenuMapper.findListByOrg(tenantId);
 		} else {// 根据角色找模块
-			modules = this.sysRoleMapper.getOrgModuleByRole(userId, user.getTenantId());
-			menuList =sysMenuMapper.findListByRole(userId, user.getTenantId());
+			modules = this.sysRoleMapper.getOrgModuleByRole(user.getId(), tenantId);
+			menuList =sysMenuMapper.findListByRole(user.getId(), tenantId);
 		}
 		processMenu(menuList);
 		user.setModules(modules);
 		user.setMenus(menuList);
 		// boolean subOrg = this.isSubOrg(37L, 50L);
-		return user;
 	}
 
 	/**

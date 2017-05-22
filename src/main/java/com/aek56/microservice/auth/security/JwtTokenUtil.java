@@ -1,11 +1,9 @@
 package com.aek56.microservice.auth.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
-import com.aek56.microservice.auth.model.security.AuthUser;
-import com.aek56.microservice.auth.redis.DeviceRedis;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,13 +11,14 @@ import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.aek56.microservice.auth.model.security.AuthUser;
+import com.aek56.microservice.auth.model.security.TokenInfo;
 import com.aek56.microservice.auth.redis.RedisRepository;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenUtil implements Serializable {
@@ -200,15 +199,15 @@ public class JwtTokenUtil implements Serializable {
         
         String key = userDetails.getDeviceId() +":"+REDIS_PREFIX_AUTH + userDetails.getUsername();
 
-        DeviceRedis deviceRedis = new DeviceRedis();
-        deviceRedis.setInTanentId(userDetails.getTenantId());//所属租户
-        deviceRedis.setTanentId(userDetails.getTenantId());//当前租户       
-        deviceRedis.setToken(token);
+        TokenInfo tokenInfo = new TokenInfo();
+        tokenInfo.setInTanentId(userDetails.getTenantId());//所属租户
+        tokenInfo.setTanentId(userDetails.getTenantId());//当前租户       
+        tokenInfo.setToken(token);
         /*
          * key: <deviceId>:auth:<手机号>
          * value: <所属租户id>,<当前租户id>, <可用租户列表>,<token>
          * */
-        redisRepository.setExpire(key, new Gson().toJson(deviceRedis), expiration);
+        redisRepository.setExpire(key, new Gson().toJson(tokenInfo), expiration);
         userDetails.setPassword(null);
         putUserDetails(userDetails, userDetails.getTenantId());
         return token;
@@ -222,15 +221,16 @@ public class JwtTokenUtil implements Serializable {
      * @return Boolean
      */
     public Boolean validateToken(String token) {
-    	if (token.isEmpty() || token.contains(":")){
+    	if (token.isEmpty()){
     		return false;
     	}
-        final String username = getUsernameFromToken(token);
+        final String username = getUsernameFromToken(token);//mobileNo
         final String deviceid = getAudienceFromToken(token).split(":")[1];
         String key = deviceid + ":" + REDIS_PREFIX_AUTH + username;
-        String redisToken = redisRepository.get(key);
-       // return StringHelper.isNotEmpty(token) && !isTokenExpired(token) && token.equals(redisToken);
-        return  !isTokenExpired(token) && token.equals(redisToken);
+        String redisTokenInfo = redisRepository.get(key);
+        Gson gson = new Gson();
+        TokenInfo tokenInfo = gson.fromJson(redisTokenInfo, TokenInfo.class);
+        return  !isTokenExpired(token) && tokenInfo!=null && token.equals(tokenInfo.getToken());
 
     }
 
@@ -243,7 +243,7 @@ public class JwtTokenUtil implements Serializable {
         final String username = getUsernameFromToken(token);
         final String deviceid = getAudienceFromToken(token).split(":")[1];       
         String key = deviceid + ":" + REDIS_PREFIX_AUTH + username;
-        DeviceRedis device = new Gson().fromJson(redisRepository.get(key), DeviceRedis.class);
+        TokenInfo device = new Gson().fromJson(redisRepository.get(key), TokenInfo.class);
         redisRepository.del(key);
         
         //读取当前租户的ID
@@ -324,17 +324,6 @@ public class JwtTokenUtil implements Serializable {
         }
         return refreshedToken;
     }*/
-
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        JwtUser user = (JwtUser) userDetails;
-        final String username = getUsernameFromToken(token);
-        final Date created = getCreatedDateFromToken(token);
-        //final Date expiration = getExpirationDateFromToken(token);
-        return (
-                username.equals(user.getUsername())
-                        && !isTokenExpired(token)
-                        && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate()));
-    }
     
     public Long getExpiration() {
         return expiration;
