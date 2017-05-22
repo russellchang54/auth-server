@@ -265,12 +265,19 @@ public class JwtTokenUtil implements Serializable {
     }
 
     /**
-     * 获得用户信息
+     * 获得用户信息 Json 字符串
      *
      * @param token Token
-     * @return UserDetails
+     * @return String
      */
-  //  public abstract UserDetails getUserDetails(String token);
+    public String getAuthUserString(String token) {
+        final String username = getUsernameFromToken(token);
+        final String deviceid = getAudienceFromToken(token).split(":")[1];
+        String key = deviceid + ":" + REDIS_PREFIX_AUTH + username;
+        TokenInfo tokenInfo =  new Gson().fromJson(redisRepository.get(key), TokenInfo.class);
+        String keyUserDetail = tokenInfo.getTanentId() + ":" + REDIS_PREFIX_USER + username;
+        return redisRepository.get(keyUserDetail);       
+    }
 
     /**
      * 存储用户信息

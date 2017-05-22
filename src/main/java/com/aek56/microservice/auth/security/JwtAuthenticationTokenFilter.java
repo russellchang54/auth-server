@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.aek56.microservice.auth.model.security.AuthUser;
 import com.google.gson.Gson;
 
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
@@ -40,9 +40,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (username != null && jwtTokenUtil.validateToken(authToken)) {
         	if (SecurityContextHolder.getContext().getAuthentication() == null) {
 //        		UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-        		String redisToken = this.jwtTokenUtil.getUserDetailsString(authToken);
+        		String redisToken = this.jwtTokenUtil.getAuthUserString(authToken);
         		Gson gson = new Gson();
-        		UserDetails userDetails = gson.fromJson(redisToken, UserDetails.class);
+        		AuthUser userDetails = gson.fromJson(redisToken, AuthUser.class);
         		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         		logger.info("authenticated user " + username + ", setting security context");
