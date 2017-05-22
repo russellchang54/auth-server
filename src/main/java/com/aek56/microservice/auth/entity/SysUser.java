@@ -92,6 +92,11 @@ public class SysUser extends DataEntity {
      */
     private List<Map<String, String>> modules = new ArrayList<Map<String, String>>();
     
+    /**
+     * 机构列表
+     */
+    private List<Map<String, String>> orgs = new ArrayList<Map<String, String>>();
+    
     @Length(min = 1, max = 100)
     public String getLoginName()
     {
@@ -234,5 +239,13 @@ public class SysUser extends DataEntity {
 
 	public void setAdminFlag(Boolean adminFlag) {
 		this.adminFlag = adminFlag;
+	}
+
+	public List<Map<String, String>> getOrgs() {
+		return orgs;
+	}
+
+	public void setOrgs(List<Map<String, String>> orgs) {
+		this.orgs = orgs;
 	}
 }

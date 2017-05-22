@@ -70,18 +70,25 @@ public class SystemService {
 
 		List<SysMenu> menuList = null;
 		List<Map<String, String>> modules = null;
+		List<Map<String, String>> orgs = null;
 		boolean admin = this.isOrgAdmin(user.getId(), tenantId);
 		if (user.getAdminFlag()||admin) {// 显示机构下所有的模块
 			modules = this.sysRoleMapper.getOrgModule(tenantId);
 			menuList =sysMenuMapper.findListByOrg(tenantId);
+			Map<String, String> tenantMap = this.sysRoleMapper.getTenant(tenantId);
+			String parentIds = tenantMap.get("parent_ids");
+			if (StringUtils.isNotBlank(parentIds)) {
+				orgs = this.sysRoleMapper.getOrg(tenantId, parentIds + "," + tenantId);
+			}
 		} else {// 根据角色找模块
 			modules = this.sysRoleMapper.getOrgModuleByRole(user.getId(), tenantId);
 			menuList =sysMenuMapper.findListByRole(user.getId(), tenantId);
+			orgs = this.sysRoleMapper.getOrgByRole(user.getId());
 		}
 		processMenu(menuList);
 		user.setModules(modules);
 		user.setMenus(menuList);
-		// boolean subOrg = this.isSubOrg(37L, 50L);
+		user.setOrgs(orgs);
 	}
 
 	/**

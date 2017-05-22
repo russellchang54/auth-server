@@ -57,7 +57,7 @@
 	<select id="isSubOrg" resultType="boolean">
 		select * from sys_tenant where parent_id = #{parentTenantId} and id = #{subTenantId} and `enable` = true and del_flag = false
 	</select>
-	
+
 	<select id="getOrgModule" resultType="java.util.Map">
 		select name,version_number,url from sys_tenant_module where tenant_id = #{tenantId} and `enable` = true and del_flag = false
 	</select>
@@ -69,6 +69,26 @@
 		and ru.user_id = #{userId} and ru.tenant_id = #{tenantId}
 		and ru.`enable` = true and rp.del_flag = false and rp.`enable` = true and sm.del_flag = false and sm.`enable` = true
 		ORDER BY sm.id asc
+	</select>
+
+	<select id="getTenant" resultType="java.util.Map">
+		select id,name,parent_ids from sys_tenant where id = #{tenantId}
+		and `enable` = true and del_flag = false
+	</select>
+
+	<select id="getOrg" resultType="java.util.Map">
+		select DISTINCT id,name from sys_tenant where (id = #{tenantId} or parent_ids like CONCAT(#{parentTenantIds},'%'))
+		and `enable` = true and del_flag = false
+		ORDER BY id asc
+	</select>
+	
+	<select id="getOrgByRole" resultType="java.util.Map">
+		select st.id,st.name from sys_role_user ru,sys_role r,sys_tenant st
+		where ru.role_id=r.id and r.tenant_id=st.id
+		and ru.`enable`=true and r.`enable`=true and r.del_flag=false
+		and st.`enable`=true and st.del_flag=false
+		and ru.user_id = #{userId}
+		ORDER BY st.id asc
 	</select>
 	
 </mapper>

@@ -30,4 +30,10 @@ public interface SysRoleMapper extends CrudDao<SysRole> {
 	List<Map<String,String>> getOrgModule(@Param("tenantId")Long tenantId);
 
 	List<Map<String,String>> getOrgModuleByRole(@Param("userId")Long userId, @Param("tenantId")Long tenantId);
+	
+	List<Map<String,String>> getOrg(@Param("tenantId")Long tenantId, @Param("parentTenantIds")String parentTenantIds);
+	
+	List<Map<String,String>> getOrgByRole(@Param("userId")Long userId);
+
+	Map<String, String> getTenant(@Param("tenantId")Long tenantId);
 }

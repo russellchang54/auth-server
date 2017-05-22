@@ -84,6 +84,11 @@ public class AuthUser extends AbstractAuthUser {
     private List<Map<String, String>> modules;
     
     /**
+     * 机构列表
+     */
+    private List<Map<String, String>> orgs;
+    
+    /**
      * 锁定
      */
     private boolean enabled;
@@ -241,6 +246,14 @@ public class AuthUser extends AbstractAuthUser {
 
 	public void setDeptName(String deptName) {
 		this.deptName = deptName;
+	}
+
+	public List<Map<String, String>> getOrgs() {
+		return orgs;
+	}
+
+	public void setOrgs(List<Map<String, String>> orgs) {
+		this.orgs = orgs;
 	}
     
 }

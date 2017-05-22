@@ -41,6 +41,7 @@ public final class AuthUserFactory
         authUser.setDeviceId(user.getDeviceId());
         authUser.setAuthorities(mapToGrantedAuthorities(user.getRoles(), user.getMenus()));
         authUser.setModules(user.getModules());
+        authUser.setOrgs(user.getOrgs());
         authUser.setDeptId(user.getDeptId());
         authUser.setDeptName(user.getDeptName());
         return authUser;
