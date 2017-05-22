@@ -25,12 +25,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aek56.microservice.auth.entity.SysUser;
 import com.aek56.microservice.auth.model.security.AuthUser;
-import com.aek56.microservice.auth.model.security.AuthUserFactory;
 import com.aek56.microservice.auth.security.JwtAuthenticationRequest;
 import com.aek56.microservice.auth.security.JwtTokenUtil;
-import com.aek56.microservice.auth.security.service.SystemService;
 import com.google.gson.Gson;
 
 @RestController
@@ -44,8 +41,6 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-    @Autowired
-    private SystemService systemService;
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public Map<String, Object> createAuthenticationToken(@RequestBody JwtAuthenticationRequest request, Device device, HttpServletResponse response) {
@@ -95,12 +90,10 @@ public class AuthController {
     @PostMapping("/perms/{tenantId}")
     public AuthUser getPerms(@PathVariable Long tenantId){
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    	Gson gson = new Gson();
     	AuthUser userDetail = (AuthUser)authentication.getPrincipal();
+    	Gson gson = new Gson();
     	logger.debug(gson.toJson(userDetail));
-    	SysUser user=this.systemService.getUserById(userDetail.getId());
-		systemService.getPerms(user, tenantId);
-    	return AuthUserFactory.create(user);
+    	return userDetail;
     }
 
     @RequestMapping(value = "admin", method = RequestMethod.GET)
