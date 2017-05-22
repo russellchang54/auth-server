@@ -53,7 +53,7 @@ public class RedisRepository {
         redisTemplate.execute((RedisCallback<Long>) connection -> {
             connection.set(key, value);
             connection.expire(key, time);
-            LOGGER.info("put key [{}] cost [{}]s", key, time);
+            LOGGER.info("put key [{}] ttl [{}]s", key, time);
             return 1L;
         });
     }
@@ -72,7 +72,7 @@ public class RedisRepository {
             byte[] values = serializer.serialize(value);
             connection.set(keys, values);
             connection.expire(keys, time);
-            LOGGER.info("put key [{}] cost [{}]s", key, time);
+            LOGGER.info("put key [{}] ttl [{}]s", key, time);
             return 1L;
         });
     }
@@ -92,7 +92,7 @@ public class RedisRepository {
                 byte[] bValues = serializer.serialize(values[i]);
                 connection.set(bKeys, bValues);
                 connection.expire(bKeys, time);
-                LOGGER.info("put key [{}] cost [{}]s", keys[i], time);
+                LOGGER.info("put key [{}] ttl [{}]s", keys[i], time);
             }
             return 1L;
         });
